@@ -1,0 +1,12 @@
+C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\NWCSampleManager.dll.config
+C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\NWCSampleManager.dll
+C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\NWCSampleManager.pdb
+C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\EntityFramework.dll
+C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\EntityFramework.xml
+C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.csprojResolveAssemblyReference.cache
+C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.Migrations.addurl.resources
+C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.csproj.GenerateResource.Cache
+C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.dll
+C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.pdb
