@@ -28,10 +28,18 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Interception;
 
 namespace NWCSampleManager
 {
     using System.Linq;
+    using System.Collections.Generic;
+    using System;
+    using System.Data.Entity.Core.Metadata.Edm;
+    using System.Data.Entity.Infrastructure;
+    using System.Data.Entity;
+    using System.Data.Entity.Core.Objects;
+    using System.Data.SqlClient;
 
     #region Unit of work
 
@@ -109,6 +117,84 @@ namespace NWCSampleManager
             InitializePartial();
         }
 
+            public override int SaveChanges()
+            {
+                foreach (var entry in ChangeTracker.Entries()
+                          .Where(p => p.State == EntityState.Deleted))
+                    SoftDelete(entry);
+
+                return base.SaveChanges();
+            }
+
+        private static Dictionary<Type, EntitySetBase> _mappingCache =
+        new Dictionary<Type, EntitySetBase>();
+
+        private string GetTableName(Type type)
+        {
+            EntitySetBase es = GetEntitySet(type);
+
+            return string.Format("[{0}].[{1}]",
+                es.MetadataProperties["Schema"].Value,
+                es.MetadataProperties["Table"].Value);
+        }
+
+        private string GetPrimaryKeyName(Type type)
+        {
+            EntitySetBase es = GetEntitySet(type);
+
+            return es.ElementType.KeyMembers[0].Name;
+        }
+
+        private EntitySetBase GetEntitySet(Type type)
+        {
+            if (!_mappingCache.ContainsKey(type))
+            {
+                ObjectContext octx = ((IObjectContextAdapter)this).ObjectContext;
+
+                string typeName = ObjectContext.GetObjectType(type).Name;
+
+                var es = octx.MetadataWorkspace
+                                .GetItemCollection(DataSpace.SSpace)
+                                .GetItems<EntityContainer>()
+                                .SelectMany(c => c.BaseEntitySets
+                                                .Where(e => e.Name == typeName))
+                                .FirstOrDefault();
+
+                if (es == null)
+                    throw new ArgumentException("Entity type not found in GetTableName", typeName);
+
+                _mappingCache.Add(type, es);
+            }
+
+            return _mappingCache[type];
+        }
+
+        private void SoftDelete(DbEntityEntry entry)
+        {
+            Type entryEntityType = entry.Entity.GetType();
+
+            if (entryEntityType == typeof(Traveller) || entryEntityType == typeof(Traveller))
+            {
+
+            
+
+            string tableName = GetTableName(entryEntityType);
+            string primaryKeyName = GetPrimaryKeyName(entryEntityType);
+
+            string sql =
+                string.Format(
+                    "UPDATE {0} SET STATUS = 1 WHERE {1} = @id",
+                        tableName, primaryKeyName);
+
+            Database.ExecuteSqlCommand(
+                sql,
+                new SqlParameter("@id", entry.OriginalValues[primaryKeyName]));
+
+            // prevent hard delete            
+            entry.State = EntityState.Detached;
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -133,6 +219,8 @@ namespace NWCSampleManager
             modelBuilder.Configurations.Add(new TeamAffiliationConfiguration());
             modelBuilder.Configurations.Add(new TravellerConfiguration());
             modelBuilder.Configurations.Add(new UserConfiguration());
+
+           
 
             OnModelCreatingPartial(modelBuilder);
         }
@@ -509,7 +597,6 @@ namespace NWCSampleManager
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"Id", Order = 1, TypeName = "int")]
-        [Index(@"PK_dbo.Questions", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
         [Display(Name = "Id")]
@@ -554,6 +641,10 @@ namespace NWCSampleManager
         [Display(Name = "Template")]
         public bool Template { get; set; } // Template
 
+        [Column(@"Status", Order = 10, TypeName = "bit")]
+        [Display(Name="Status")]
+        public bool Status { get; set; } // Status
+        
         // Reverse navigation
 
         /// <summary>
@@ -601,7 +692,6 @@ namespace NWCSampleManager
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"Id", Order = 1, TypeName = "int")]
-        [Index(@"PK_dbo.Responses", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
         [Display(Name = "Id")]
@@ -683,7 +773,6 @@ namespace NWCSampleManager
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"Id", Order = 1, TypeName = "int")]
-        [Index(@"PK_dbo.ResponseRepository", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
         [Display(Name = "Id")]
@@ -735,7 +824,6 @@ namespace NWCSampleManager
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"Id", Order = 1, TypeName = "int")]
-        [Index(@"PK_dbo.TeamAffiliations", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
         [Display(Name = "Id")]
@@ -769,7 +857,6 @@ namespace NWCSampleManager
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"Id", Order = 1, TypeName = "int")]
-        [Index(@"PK_dbo.Travellers", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
         [Display(Name = "Id")]
@@ -811,6 +898,10 @@ namespace NWCSampleManager
         [Display(Name = "Name")]
         public string Name { get; set; } // Name
 
+        [Column(@"Status", Order = 10, TypeName = "bit")]
+        [Display(Name = "Status")]
+        public bool Status { get; set; } // Status
+
         // Reverse navigation
 
         /// <summary>
@@ -846,7 +937,6 @@ namespace NWCSampleManager
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"Id", Order = 1, TypeName = "int")]
-        [Index(@"PK_dbo.Users", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
         [Display(Name = "Id")]
@@ -914,6 +1004,7 @@ namespace NWCSampleManager
 
         public QuestionConfiguration(string schema)
         {
+            this.Map(x => x.Requires("Status").HasValue(false)).Ignore(x => x.Status);
             Property(x => x.HelpImage).IsOptional();
             HasMany(t => t.Corequisites).WithMany().Map(m =>
             {
@@ -1012,7 +1103,7 @@ namespace NWCSampleManager
 
         public TravellerConfiguration(string schema)
         {
-
+            this.Map(x => x.Requires("Status").HasValue(false)).Ignore(x=>x.Status);
             HasMany(t => t.Questions).WithMany(t => t.Travellers).Map(m =>
             {
                 m.ToTable("TravellerActionList", "dbo");
