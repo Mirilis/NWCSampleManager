@@ -590,6 +590,24 @@ namespace NWCSampleManager
 
     #region POCO classes
 
+    public partial class HelpImage
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"Id", Order = 1, TypeName = "int")]
+        [Required]
+        [Key]
+        [Display(Name = "Id")]
+        public int Id { get; set; } // Id (Primary key)
+        
+        [Required]
+        [Column(@"QuestionId", Order = 2, TypeName = "int")]
+        public virtual Question Question { get; set; }
+
+        [Required]
+        [Column(@"Image", Order = 3, TypeName = "varbinary(max)")]
+        public byte[] Image { get; set; }
+    }
+
     // Questions
     [Table("Questions", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.30.0.0")]
@@ -632,9 +650,9 @@ namespace NWCSampleManager
         [Display(Name = "Help text")]
         public string HelpText { get; set; } // HelpText
 
-        [Column(@"HelpImage", Order = 8, TypeName = "nvarchar(max)")]
-        [Display(Name = "Help image")]
-        public string HelpImage { get; set; } // HelpImage
+        
+        [Display(Name = "Help Image")]
+        public virtual HelpImage HelpImage { get; set; }
 
         [Column(@"Template", Order = 9, TypeName = "bit")]
         [Required]
@@ -993,8 +1011,20 @@ namespace NWCSampleManager
 
     #region POCO Configuration
 
-    // Questions
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.30.0.0")]
+    public partial class HelpImageConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<HelpImage>
+    {
+        public HelpImageConfiguration()
+            : this("dbo")
+        {
+        }
+
+        public HelpImageConfiguration(string schema)
+        {
+            this.HasRequired(x => x.Question);
+        }
+    }
+        // Questions
+        [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.30.0.0")]
     public partial class QuestionConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Question>
     {
         public QuestionConfiguration()
@@ -1002,10 +1032,13 @@ namespace NWCSampleManager
         {
         }
 
+        
+
         public QuestionConfiguration(string schema)
         {
+
             this.Map(x => x.Requires("Status").HasValue(false)).Ignore(x => x.Status);
-            Property(x => x.HelpImage).IsOptional();
+            this.HasOptional(x => x.HelpImage);
             HasMany(t => t.Corequisites).WithMany().Map(m =>
             {
                 m.ToTable("Corequisistes", "dbo");

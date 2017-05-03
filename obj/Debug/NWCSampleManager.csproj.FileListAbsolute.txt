@@ -15,3 +15,14 @@ C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampl
 \\newnas01\UserDocs$\ahoover\My Documents\Visual Studio 2017\Projects\NWCSampleManager\bin\Debug\NWCSampleManager.pdb
 \\newnas01\UserDocs$\ahoover\My Documents\Visual Studio 2017\Projects\NWCSampleManager\obj\Debug\NWCSampleManager.dll
 \\newnas01\UserDocs$\ahoover\My Documents\Visual Studio 2017\Projects\NWCSampleManager\obj\Debug\NWCSampleManager.pdb
+\\newnas01\UserDocs$\ahoover\My Documents\Visual Studio 2017\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\NWCSampleManager.dll.config
+\\newnas01\UserDocs$\ahoover\My Documents\Visual Studio 2017\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\NWCSampleManager.dll
+\\newnas01\UserDocs$\ahoover\My Documents\Visual Studio 2017\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\NWCSampleManager.pdb
+\\newnas01\UserDocs$\ahoover\My Documents\Visual Studio 2017\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.dll
+\\newnas01\UserDocs$\ahoover\My Documents\Visual Studio 2017\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.pdb
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\NWCSampleManager.dll.config
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\NWCSampleManager.dll
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\NWCSampleManager.pdb
+C:\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.csprojResolveAssemblyReference.cache
+C:\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.dll
+C:\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.pdb
