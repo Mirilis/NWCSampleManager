@@ -1,0 +1,10 @@
+C:\Projects\NWCSampleManager\NWCSampleManager\obj\Release\NWCSampleManager.csprojResolveAssemblyReference.cache
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Release\NWCSampleManager.dll.config
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Release\NWCSampleManager.dll
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Release\NWCSampleManager.pdb
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Release\EntityFramework.dll
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Release\EntityFramework.SqlServer.dll
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Release\EntityFramework.xml
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Release\EntityFramework.SqlServer.xml
+C:\Projects\NWCSampleManager\NWCSampleManager\obj\Release\NWCSampleManager.dll
+C:\Projects\NWCSampleManager\NWCSampleManager\obj\Release\NWCSampleManager.pdb

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
 
 namespace NWCSampleManager
 {
@@ -11,7 +10,7 @@ namespace NWCSampleManager
         FoundryEngineering = 2,
         MetallurgicalEngineering = 4,
         QualityEngineering = 8,
-        IndustrialEngineering =16,
+        IndustrialEngineering = 16,
         ProductionControl = 32,
         CoreDepartment = 64,
         MoldDepartment = 128,
@@ -23,6 +22,8 @@ namespace NWCSampleManager
 
     public static class ProductFlow
     {
+        #region Private Fields
+
         private static readonly ReadOnlyCollection<string> order = new ReadOnlyCollection<string>(new[]
             {
                 "MetallurgicalEngineering",
@@ -36,6 +37,12 @@ namespace NWCSampleManager
                 "ShippingDepartment"
             });
 
+        #endregion Private Fields
+
+        #region Public Properties
+
         public static ReadOnlyCollection<string> Order { get => order; }
+
+        #endregion Public Properties
     }
 }

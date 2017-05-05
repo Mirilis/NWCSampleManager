@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Text;
+﻿using System.Text;
 
 namespace NWCSampleManager
 {
     public static class ExtensionMethods
     {
-        public static string SplitCamelCase(this string input)
-        {
-            return System.Text.RegularExpressions.Regex.Replace(input, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
-        }
+        #region Public Methods
 
         public static string RemoveSpecialCharacters(this string input)
         {
@@ -30,5 +23,12 @@ namespace NWCSampleManager
                 return sb.ToString();
             }
         }
+
+        public static string SplitCamelCase(this string input)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(input, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
+        }
+
+        #endregion Public Methods
     }
 }

@@ -23,6 +23,10 @@ C:\Users\Mirilis\documents\visual studio 2017\Projects\NWCSampleManager\NWCSampl
 C:\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\NWCSampleManager.dll.config
 C:\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\NWCSampleManager.dll
 C:\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\NWCSampleManager.pdb
-C:\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.csprojResolveAssemblyReference.cache
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\EntityFramework.dll
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\EntityFramework.SqlServer.dll
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\EntityFramework.xml
+C:\Projects\NWCSampleManager\NWCSampleManager\bin\Debug\EntityFramework.SqlServer.xml
 C:\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.dll
 C:\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.pdb
+C:\Projects\NWCSampleManager\NWCSampleManager\obj\Debug\NWCSampleManager.csprojResolveAssemblyReference.cache

@@ -8,8 +8,8 @@
 //
 // The following connection settings were used to generate this file:
 //     Configuration file:     "NWCSampleManager\App.config"
-//     Connection String Name: "SampleTravellers"
-//     Connection String:      "Data Source=(localdb)\mssqllocaldb;Initial Catalog=SampleTravellers;Integrated Security=True;"
+//     Connection String Name: "SampleTravelers"
+//     Connection String:      "Data Source=(localdb)\mssqllocaldb;Initial Catalog=SampleTravelers;Integrated Security=True;"
 // ------------------------------------------------------------------------------------------------
 // Database Edition       : Express Edition (64-bit)
 // Database Engine Edition: Express
@@ -40,16 +40,18 @@ namespace NWCSampleManager
     using System.Data.Entity;
     using System.Data.Entity.Core.Objects;
     using System.Data.SqlClient;
+    using System.Data.Entity.Validation;
+    using System.Text;
 
     #region Unit of work
 
-    public interface ISampleTravellersContext : System.IDisposable
+    public interface ISampleTravelersContext : System.IDisposable
     {
         System.Data.Entity.DbSet<Question> Questions { get; set; } // Questions
         System.Data.Entity.DbSet<Response> Responses { get; set; } // Responses
         System.Data.Entity.DbSet<ResponseRepository> ResponseRepositories { get; set; } // ResponseRepository
         System.Data.Entity.DbSet<TeamAffiliation> TeamAffiliations { get; set; } // TeamAffiliations
-        System.Data.Entity.DbSet<Traveller> Travellers { get; set; } // Travellers
+        System.Data.Entity.DbSet<Traveler> travelers { get; set; } // travelers
         System.Data.Entity.DbSet<User> Users { get; set; } // Users
 
         int SaveChanges();
@@ -71,47 +73,65 @@ namespace NWCSampleManager
     #region Database context
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.30.0.0")]
-    public partial class SampleTravellersContext : System.Data.Entity.DbContext, ISampleTravellersContext
+    public partial class SampleTravelersContext : System.Data.Entity.DbContext, ISampleTravelersContext
     {
         public System.Data.Entity.DbSet<Question> Questions { get; set; } // Questions
         public System.Data.Entity.DbSet<Response> Responses { get; set; } // Responses
         public System.Data.Entity.DbSet<ResponseRepository> ResponseRepositories { get; set; } // ResponseRepository
         public System.Data.Entity.DbSet<TeamAffiliation> TeamAffiliations { get; set; } // TeamAffiliations
-        public System.Data.Entity.DbSet<Traveller> Travellers { get; set; } // Travellers
+        public System.Data.Entity.DbSet<Traveler> travelers { get; set; } // travelers
         public System.Data.Entity.DbSet<User> Users { get; set; } // Users
 
-        static SampleTravellersContext()
+        public static string AlertUserErrors(DbEntityValidationException e)
         {
-            System.Data.Entity.Database.SetInitializer<SampleTravellersContext>(null);
+            var s = new StringBuilder();
+            s.Append("The following issues are preventing the saving of this document:" + Environment.NewLine);
+            foreach (var eve in e.EntityValidationErrors)
+            {
+                foreach (var ve in eve.ValidationErrors)
+                {
+                    s.AppendFormat("Property: \"{0}\", Current Value: \"{1}\", Error: \"{2}\"",
+                        ve.PropertyName,
+                        eve.Entry.CurrentValues.GetValue<object>(ve.PropertyName),
+                        ve.ErrorMessage);
+                    s.Append(Environment.NewLine);
+                }
+            }
+            return s.ToString();
+        }
+
+        static SampleTravelersContext()
+        {
+            System.Data.Entity.Database.SetInitializer<SampleTravelersContext>(null);
            
         }
 
-        public SampleTravellersContext()
-            : base("Name=SampleTravellers")
+        public SampleTravelersContext()
+            : base("Name=SampleTravelers")
         {
             InitializePartial();
             this.Configuration.LazyLoadingEnabled = true;
         }
 
-        public SampleTravellersContext(string connectionString)
+        public SampleTravelersContext(string connectionString)
             : base(connectionString)
         {
             InitializePartial();
         }
 
-        public SampleTravellersContext(string connectionString, System.Data.Entity.Infrastructure.DbCompiledModel model)
+        public SampleTravelersContext(string connectionString, System.Data.Entity.Infrastructure.DbCompiledModel model)
             : base(connectionString, model)
         {
             InitializePartial();
         }
 
-        public SampleTravellersContext(System.Data.Common.DbConnection existingConnection, bool contextOwnsConnection)
+        public SampleTravelersContext(System.Data.Common.DbConnection existingConnection, bool contextOwnsConnection)
             : base(existingConnection, contextOwnsConnection)
         {
             InitializePartial();
         }
 
-        public SampleTravellersContext(System.Data.Common.DbConnection existingConnection, System.Data.Entity.Infrastructure.DbCompiledModel model, bool contextOwnsConnection)
+        public SampleTravelersContext(System.Data.Common.DbConnection existingConnection, System.Data.Entity.Infrastructure.DbCompiledModel model, bool contextOwnsConnection)
             : base(existingConnection, model, contextOwnsConnection)
         {
             InitializePartial();
@@ -173,7 +193,7 @@ namespace NWCSampleManager
         {
             Type entryEntityType = entry.Entity.GetType();
 
-            if (entryEntityType == typeof(Traveller) || entryEntityType == typeof(Traveller))
+            if (entryEntityType == typeof(Traveler) || entryEntityType == typeof(Traveler))
             {
 
             
@@ -217,7 +237,7 @@ namespace NWCSampleManager
             modelBuilder.Configurations.Add(new ResponseConfiguration());
             modelBuilder.Configurations.Add(new ResponseRepositoryConfiguration());
             modelBuilder.Configurations.Add(new TeamAffiliationConfiguration());
-            modelBuilder.Configurations.Add(new TravellerConfiguration());
+            modelBuilder.Configurations.Add(new TravelerConfiguration());
             modelBuilder.Configurations.Add(new UserConfiguration());
 
            
@@ -231,7 +251,7 @@ namespace NWCSampleManager
             modelBuilder.Configurations.Add(new ResponseConfiguration(schema));
             modelBuilder.Configurations.Add(new ResponseRepositoryConfiguration(schema));
             modelBuilder.Configurations.Add(new TeamAffiliationConfiguration(schema));
-            modelBuilder.Configurations.Add(new TravellerConfiguration(schema));
+            modelBuilder.Configurations.Add(new TravelerConfiguration(schema));
             modelBuilder.Configurations.Add(new UserConfiguration(schema));
             return modelBuilder;
         }
@@ -241,354 +261,35 @@ namespace NWCSampleManager
     }
     #endregion
 
-    #region Fake Database context
-
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.30.0.0")]
-    public partial class FakeSampleTravellersContext : ISampleTravellersContext
-    {
-        public System.Data.Entity.DbSet<Question> Questions { get; set; }
-        public System.Data.Entity.DbSet<Response> Responses { get; set; }
-        public System.Data.Entity.DbSet<ResponseRepository> ResponseRepositories { get; set; }
-        public System.Data.Entity.DbSet<TeamAffiliation> TeamAffiliations { get; set; }
-        public System.Data.Entity.DbSet<Traveller> Travellers { get; set; }
-        public System.Data.Entity.DbSet<User> Users { get; set; }
-
-        public FakeSampleTravellersContext()
-        {
-            Questions = new FakeDbSet<Question>("Id");
-            Responses = new FakeDbSet<Response>("Id");
-            ResponseRepositories = new FakeDbSet<ResponseRepository>("Id");
-            TeamAffiliations = new FakeDbSet<TeamAffiliation>("Id");
-            Travellers = new FakeDbSet<Traveller>("Id");
-            Users = new FakeDbSet<User>("Id");
-
-            InitializePartial();
-        }
-
-        public int SaveChangesCount { get; private set; }
-        public int SaveChanges()
-        {
-            ++SaveChangesCount;
-            return 1;
-        }
-
-        public System.Threading.Tasks.Task<int> SaveChangesAsync()
-        {
-            ++SaveChangesCount;
-            return System.Threading.Tasks.Task<int>.Factory.StartNew(() => 1);
-        }
-
-        public System.Threading.Tasks.Task<int> SaveChangesAsync(System.Threading.CancellationToken cancellationToken)
-        {
-            ++SaveChangesCount;
-            return System.Threading.Tasks.Task<int>.Factory.StartNew(() => 1, cancellationToken);
-        }
-
-        partial void InitializePartial();
-
-        protected virtual void Dispose(bool disposing)
-        {
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        public System.Data.Entity.Infrastructure.DbChangeTracker _changeTracker;
-        public System.Data.Entity.Infrastructure.DbChangeTracker ChangeTracker { get { return _changeTracker; } }
-        public System.Data.Entity.Infrastructure.DbContextConfiguration _configuration;
-        public System.Data.Entity.Infrastructure.DbContextConfiguration Configuration { get { return _configuration; } }
-        public System.Data.Entity.Database _database;
-        public System.Data.Entity.Database Database { get { return _database; } }
-        public System.Data.Entity.Infrastructure.DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class
-        {
-            throw new System.NotImplementedException();
-        }
-        public System.Data.Entity.Infrastructure.DbEntityEntry Entry(object entity)
-        {
-            throw new System.NotImplementedException();
-        }
-        public System.Collections.Generic.IEnumerable<System.Data.Entity.Validation.DbEntityValidationResult> GetValidationErrors()
-        {
-            throw new System.NotImplementedException();
-        }
-        public System.Data.Entity.DbSet Set(System.Type entityType)
-        {
-            throw new System.NotImplementedException();
-        }
-        public System.Data.Entity.DbSet<TEntity> Set<TEntity>() where TEntity : class
-        {
-            throw new System.NotImplementedException();
-        }
-        public override string ToString()
-        {
-            throw new System.NotImplementedException();
-        }
-
-    }
-
-    // ************************************************************************
-    // Fake DbSet
-    // Implementing Find:
-    //      The Find method is difficult to implement in a generic fashion. If
-    //      you need to test code that makes use of the Find method it is
-    //      easiest to create a test DbSet for each of the entity types that
-    //      need to support find. You can then write logic to find that
-    //      particular type of entity, as shown below:
-    //      public class FakeBlogDbSet : FakeDbSet<Blog>
-    //      {
-    //          public override Blog Find(params object[] keyValues)
-    //          {
-    //              var id = (int) keyValues.Single();
-    //              return this.SingleOrDefault(b => b.BlogId == id);
-    //          }
-    //      }
-    //      Read more about it here: https://msdn.microsoft.com/en-us/data/dn314431.aspx
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.30.0.0")]
-    public partial class FakeDbSet<TEntity> : System.Data.Entity.DbSet<TEntity>, IQueryable, System.Collections.Generic.IEnumerable<TEntity>, System.Data.Entity.Infrastructure.IDbAsyncEnumerable<TEntity> where TEntity : class
-    {
-        private readonly System.Reflection.PropertyInfo[] _primaryKeys;
-        private readonly System.Collections.ObjectModel.ObservableCollection<TEntity> _data;
-        private readonly IQueryable _query;
-
-        public FakeDbSet()
-        {
-            _data = new System.Collections.ObjectModel.ObservableCollection<TEntity>();
-            _query = _data.AsQueryable();
-
-            InitializePartial();
-        }
-
-        public FakeDbSet(params string[] primaryKeys)
-        {
-            _primaryKeys = typeof(TEntity).GetProperties().Where(x => primaryKeys.Contains(x.Name)).ToArray();
-            _data = new System.Collections.ObjectModel.ObservableCollection<TEntity>();
-            _query = _data.AsQueryable();
-
-            InitializePartial();
-        }
-
-        public override TEntity Find(params object[] keyValues)
-        {
-            if (_primaryKeys == null)
-                throw new System.ArgumentException("No primary keys defined");
-            if (keyValues.Length != _primaryKeys.Length)
-                throw new System.ArgumentException("Incorrect number of keys passed to Find method");
-
-            var keyQuery = this.AsQueryable();
-            keyQuery = keyValues
-                .Select((t, i) => i)
-                .Aggregate(keyQuery,
-                    (current, x) =>
-                        current.Where(entity => _primaryKeys[x].GetValue(entity, null).Equals(keyValues[x])));
-
-            return keyQuery.SingleOrDefault();
-        }
-
-        public override System.Threading.Tasks.Task<TEntity> FindAsync(System.Threading.CancellationToken cancellationToken, params object[] keyValues)
-        {
-            return System.Threading.Tasks.Task<TEntity>.Factory.StartNew(() => Find(keyValues), cancellationToken);
-        }
-
-        public override System.Threading.Tasks.Task<TEntity> FindAsync(params object[] keyValues)
-        {
-            return System.Threading.Tasks.Task<TEntity>.Factory.StartNew(() => Find(keyValues));
-        }
-
-        public override System.Collections.Generic.IEnumerable<TEntity> AddRange(System.Collections.Generic.IEnumerable<TEntity> entities)
-        {
-            if (entities == null) throw new System.ArgumentNullException("entities");
-            var items = entities.ToList();
-            foreach (var entity in items)
-            {
-                _data.Add(entity);
-            }
-            return items;
-        }
-
-        public override TEntity Add(TEntity item)
-        {
-            if (item == null) throw new System.ArgumentNullException("item");
-            _data.Add(item);
-            return item;
-        }
-
-        public override System.Collections.Generic.IEnumerable<TEntity> RemoveRange(System.Collections.Generic.IEnumerable<TEntity> entities)
-        {
-            if (entities == null) throw new System.ArgumentNullException("entities");
-            var items = entities.ToList();
-            foreach (var entity in items)
-            {
-                _data.Remove(entity);
-            }
-            return items;
-        }
-
-        public override TEntity Remove(TEntity item)
-        {
-            if (item == null) throw new System.ArgumentNullException("item");
-            _data.Remove(item);
-            return item;
-        }
-
-        public override TEntity Attach(TEntity item)
-        {
-            if (item == null) throw new System.ArgumentNullException("item");
-            _data.Add(item);
-            return item;
-        }
-
-        public override TEntity Create()
-        {
-            return System.Activator.CreateInstance<TEntity>();
-        }
-
-        public override TDerivedEntity Create<TDerivedEntity>()
-        {
-            return System.Activator.CreateInstance<TDerivedEntity>();
-        }
-
-        public override System.Collections.ObjectModel.ObservableCollection<TEntity> Local
-        {
-            get { return _data; }
-        }
-
-        System.Type IQueryable.ElementType
-        {
-            get { return _query.ElementType; }
-        }
-
-        System.Linq.Expressions.Expression IQueryable.Expression
-        {
-            get { return _query.Expression; }
-        }
-
-        IQueryProvider IQueryable.Provider
-        {
-            get { return new FakeDbAsyncQueryProvider<TEntity>(_query.Provider); }
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return _data.GetEnumerator();
-        }
-
-        System.Collections.Generic.IEnumerator<TEntity> System.Collections.Generic.IEnumerable<TEntity>.GetEnumerator()
-        {
-            return _data.GetEnumerator();
-        }
-
-        System.Data.Entity.Infrastructure.IDbAsyncEnumerator<TEntity> System.Data.Entity.Infrastructure.IDbAsyncEnumerable<TEntity>.GetAsyncEnumerator()
-        {
-            return new FakeDbAsyncEnumerator<TEntity>(_data.GetEnumerator());
-        }
-
-        partial void InitializePartial();
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.30.0.0")]
-    public class FakeDbAsyncQueryProvider<TEntity> : System.Data.Entity.Infrastructure.IDbAsyncQueryProvider
-    {
-        private readonly IQueryProvider _inner;
-
-        public FakeDbAsyncQueryProvider(IQueryProvider inner)
-        {
-            _inner = inner;
-        }
-
-        public IQueryable CreateQuery(System.Linq.Expressions.Expression expression)
-        {
-            return new FakeDbAsyncEnumerable<TEntity>(expression);
-        }
-
-        public IQueryable<TElement> CreateQuery<TElement>(System.Linq.Expressions.Expression expression)
-        {
-            return new FakeDbAsyncEnumerable<TElement>(expression);
-        }
-
-        public object Execute(System.Linq.Expressions.Expression expression)
-        {
-            return _inner.Execute(expression);
-        }
-
-        public TResult Execute<TResult>(System.Linq.Expressions.Expression expression)
-        {
-            return _inner.Execute<TResult>(expression);
-        }
-
-        public System.Threading.Tasks.Task<object> ExecuteAsync(System.Linq.Expressions.Expression expression, System.Threading.CancellationToken cancellationToken)
-        {
-            return System.Threading.Tasks.Task.FromResult(Execute(expression));
-        }
-
-        public System.Threading.Tasks.Task<TResult> ExecuteAsync<TResult>(System.Linq.Expressions.Expression expression, System.Threading.CancellationToken cancellationToken)
-        {
-            return System.Threading.Tasks.Task.FromResult(Execute<TResult>(expression));
-        }
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.30.0.0")]
-    public class FakeDbAsyncEnumerable<T> : EnumerableQuery<T>, System.Data.Entity.Infrastructure.IDbAsyncEnumerable<T>, IQueryable<T>
-    {
-        public FakeDbAsyncEnumerable(System.Collections.Generic.IEnumerable<T> enumerable)
-            : base(enumerable)
-        { }
-
-        public FakeDbAsyncEnumerable(System.Linq.Expressions.Expression expression)
-            : base(expression)
-        { }
-
-        public System.Data.Entity.Infrastructure.IDbAsyncEnumerator<T> GetAsyncEnumerator()
-        {
-            return new FakeDbAsyncEnumerator<T>(this.AsEnumerable().GetEnumerator());
-        }
-
-        System.Data.Entity.Infrastructure.IDbAsyncEnumerator System.Data.Entity.Infrastructure.IDbAsyncEnumerable.GetAsyncEnumerator()
-        {
-            return GetAsyncEnumerator();
-        }
-
-        IQueryProvider IQueryable.Provider
-        {
-            get { return new FakeDbAsyncQueryProvider<T>(this); }
-        }
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.30.0.0")]
-    public class FakeDbAsyncEnumerator<T> : System.Data.Entity.Infrastructure.IDbAsyncEnumerator<T>
-    {
-        private readonly System.Collections.Generic.IEnumerator<T> _inner;
-
-        public FakeDbAsyncEnumerator(System.Collections.Generic.IEnumerator<T> inner)
-        {
-            _inner = inner;
-        }
-
-        public void Dispose()
-        {
-            _inner.Dispose();
-        }
-
-        public System.Threading.Tasks.Task<bool> MoveNextAsync(System.Threading.CancellationToken cancellationToken)
-        {
-            return System.Threading.Tasks.Task.FromResult(_inner.MoveNext());
-        }
-
-        public T Current
-        {
-            get { return _inner.Current; }
-        }
-
-        object System.Data.Entity.Infrastructure.IDbAsyncEnumerator.Current
-        {
-            get { return Current; }
-        }
-    }
-
-    #endregion
-
     #region POCO classes
+
+    public partial class QuestionComment
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"Id", Order = 1, TypeName = "int")]
+        [Required]
+        [Key]
+        [Display(Name = "Id")]
+        public int Id { get; set; } // Id (Primary key)
+
+        [Column(@"MilestoneId", Order = 2, TypeName = "int")]
+        [Index(@"IX_FK_MilestoneResponseRepository", 1, IsUnique = false, IsClustered = false)]
+        [Required]
+        [Display(Name = "Milestone ID")]
+        public int MilestoneId { get; set; } // MilestoneId
+
+        [Column(@"QuestionId", Order = 3, TypeName = "int")]
+        [Index(@"IX_FK_QuestionResponseRepository", 1, IsUnique = false, IsClustered = false)]
+        [Required]
+        [Display(Name = "Question ID")]
+        public int QuestionId { get; set; } // QuestionId
+
+        [ForeignKey("MilestoneId")] public virtual Traveler Traveler { get; set; } // FK_dbo.ResponseRepository_dbo.travelers_MilestoneId
+        /// <summary>
+        /// Parent Question pointed by [ResponseRepository].([QuestionId]) (FK_dbo.ResponseRepository_dbo.Questions_QuestionId)
+        /// </summary>
+        [ForeignKey("QuestionId")] public virtual Question Question { get; set; } // FK_dbo.ResponseRepository_dbo.Questions_QuestionId
+    }
 
     public partial class HelpImage
     {
@@ -649,7 +350,6 @@ namespace NWCSampleManager
         [Required]
         [Display(Name = "Help text")]
         public string HelpText { get; set; } // HelpText
-
         
         [Display(Name = "Help Image")]
         public virtual HelpImage HelpImage { get; set; }
@@ -686,9 +386,11 @@ namespace NWCSampleManager
         /// </summary>
         public virtual System.Collections.Generic.ICollection<ResponseRepository> ResponseRepositories { get; set; } // ResponseRepository.FK_dbo.ResponseRepository_dbo.Questions_QuestionId
         /// <summary>
-        /// Child Travellers (Many-to-Many) mapped by table [TravellerActionList]
+        /// Child travelers (Many-to-Many) mapped by table [travelerActionList]
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<Traveller> Travellers { get; set; } // Many to many mapping
+        public virtual System.Collections.Generic.ICollection<Traveler> Travelers { get; set; } // Many to many mapping
+
+        public virtual System.Collections.Generic.ICollection<QuestionComment> QuestionComments { get; set; } // ResponseRepository.FK_dbo.ResponseRepository_dbo.Questions_QuestionId
 
         public Question()
         {
@@ -696,7 +398,8 @@ namespace NWCSampleManager
             Corequisites = new System.Collections.Generic.List<Question>();
             Postrequisites = new System.Collections.Generic.List<Question>();
             Prerequisites = new System.Collections.Generic.List<Question>();
-            Travellers = new System.Collections.Generic.List<Traveller>();
+            Travelers = new System.Collections.Generic.List<Traveler>();
+            QuestionComments = new List<QuestionComment>();
             InitializePartial();
         }
 
@@ -765,6 +468,14 @@ namespace NWCSampleManager
         [Display(Name = "Query")]
         public string Query { get; set; } // Query
 
+        [Column(@"QueryResult", Order = 13, TypeName = "nvarchar(max)")]
+        [Display(Name = "QueryResult")]
+        public string QueryResult { get; set; } // QueryResult
+
+        [Column(@"Comment", Order = 14, TypeName = "nvarchar(max)")]
+        [Display(Name = "Comment")]
+        public string Comment { get; set; } // Comment
+
         // Foreign keys
 
         /// <summary>
@@ -818,9 +529,9 @@ namespace NWCSampleManager
         // Foreign keys
 
         /// <summary>
-        /// Parent Traveller pointed by [ResponseRepository].([MilestoneId]) (FK_dbo.ResponseRepository_dbo.Travellers_MilestoneId)
+        /// Parent traveler pointed by [ResponseRepository].([MilestoneId]) (FK_dbo.ResponseRepository_dbo.travelers_MilestoneId)
         /// </summary>
-        [ForeignKey("MilestoneId")] public virtual Traveller Traveller { get; set; } // FK_dbo.ResponseRepository_dbo.Travellers_MilestoneId
+        [ForeignKey("MilestoneId")] public virtual Traveler Traveler { get; set; } // FK_dbo.ResponseRepository_dbo.travelers_MilestoneId
         /// <summary>
         /// Parent Question pointed by [ResponseRepository].([QuestionId]) (FK_dbo.ResponseRepository_dbo.Questions_QuestionId)
         /// </summary>
@@ -829,6 +540,7 @@ namespace NWCSampleManager
         public ResponseRepository()
         {
             Responses = new System.Collections.Generic.List<Response>();
+
             InitializePartial();
         }
 
@@ -868,10 +580,10 @@ namespace NWCSampleManager
         partial void InitializePartial();
     }
 
-    // Travellers
-    [Table("Travellers", Schema = "dbo")]
+    // travelers
+    [Table("Travelers", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.30.0.0")]
-    public partial class Traveller
+    public partial class Traveler
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"Id", Order = 1, TypeName = "int")]
@@ -923,25 +635,28 @@ namespace NWCSampleManager
         // Reverse navigation
 
         /// <summary>
-        /// Child Questions (Many-to-Many) mapped by table [TravellerActionList]
+        /// Child Questions (Many-to-Many) mapped by table [travelerActionList]
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Question> Questions { get; set; } // Many to many mapping
         /// <summary>
-        /// Child ResponseRepositories where [ResponseRepository].[MilestoneId] point to this entity (FK_dbo.ResponseRepository_dbo.Travellers_MilestoneId)
+        /// Child ResponseRepositories where [ResponseRepository].[MilestoneId] point to this entity (FK_dbo.ResponseRepository_dbo.travelers_MilestoneId)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<ResponseRepository> ResponseRepositories { get; set; } // ResponseRepository.FK_dbo.ResponseRepository_dbo.Travellers_MilestoneId
+        public virtual System.Collections.Generic.ICollection<ResponseRepository> ResponseRepositories { get; set; } // ResponseRepository.FK_dbo.ResponseRepository_dbo.travelers_MilestoneId
+
+        public virtual System.Collections.Generic.ICollection<QuestionComment> QuestionComments { get; set; } // ResponseRepository.FK_dbo.ResponseRepository_dbo.Questions_QuestionId
 
         // Foreign keys
 
         /// <summary>
-        /// Parent User pointed by [Travellers].([OwnerId]) (FK_dbo.Travellers_dbo.Users_Owner_Id)
+        /// Parent User pointed by [travelers].([OwnerId]) (FK_dbo.travelers_dbo.Users_Owner_Id)
         /// </summary>
-        [ForeignKey("OwnerId")] public virtual User User { get; set; } // FK_dbo.Travellers_dbo.Users_Owner_Id
+        [ForeignKey("OwnerId")] public virtual User User { get; set; } // FK_dbo.travelers_dbo.Users_Owner_Id
 
-        public Traveller()
+        public Traveler()
         {
             ResponseRepositories = new System.Collections.Generic.List<ResponseRepository>();
             Questions = new System.Collections.Generic.List<Question>();
+            QuestionComments = new System.Collections.Generic.List<QuestionComment>();
             InitializePartial();
         }
 
@@ -992,14 +707,14 @@ namespace NWCSampleManager
         /// </summary>
         public virtual System.Collections.Generic.ICollection<TeamAffiliation> TeamAffiliations { get; set; } // Many to many mapping
         /// <summary>
-        /// Child Travellers where [Travellers].[Owner_Id] point to this entity (FK_dbo.Travellers_dbo.Users_Owner_Id)
+        /// Child travelers where [travelers].[Owner_Id] point to this entity (FK_dbo.travelers_dbo.Users_Owner_Id)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<Traveller> Travellers { get; set; } // Travellers.FK_dbo.Travellers_dbo.Users_Owner_Id
+        public virtual System.Collections.Generic.ICollection<Traveler> travelers { get; set; } // travelers.FK_dbo.travelers_dbo.Users_Owner_Id
 
         public User()
         {
             Responses = new System.Collections.Generic.List<Response>();
-            Travellers = new System.Collections.Generic.List<Traveller>();
+            travelers = new System.Collections.Generic.List<Traveler>();
             TeamAffiliations = new System.Collections.Generic.List<TeamAffiliation>();
             InitializePartial();
         }
@@ -1080,6 +795,7 @@ namespace NWCSampleManager
             Property(x => x.Boolean).IsOptional();
             Property(x => x.UserId).IsOptional();
             Property(x => x.Query).IsOptional();
+            Property(x => x.QueryResult).IsOptional();
 
             InitializePartial();
         }
@@ -1096,6 +812,21 @@ namespace NWCSampleManager
         }
 
         public ResponseRepositoryConfiguration(string schema)
+        {
+
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    public partial class QuestionCommentConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<ResponseRepository>
+    {
+        public QuestionCommentConfiguration()
+            : this("dbo")
+        {
+        }
+
+        public QuestionCommentConfiguration(string schema)
         {
 
             InitializePartial();
@@ -1125,21 +856,21 @@ namespace NWCSampleManager
         partial void InitializePartial();
     }
 
-    // Travellers
+    // travelers
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.30.0.0")]
-    public partial class TravellerConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Traveller>
+    public partial class TravelerConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Traveler>
     {
-        public TravellerConfiguration()
+        public TravelerConfiguration()
             : this("dbo")
         {
         }
 
-        public TravellerConfiguration(string schema)
+        public TravelerConfiguration(string schema)
         {
             this.Map(x => x.Requires("Status").HasValue(false)).Ignore(x=>x.Status);
-            HasMany(t => t.Questions).WithMany(t => t.Travellers).Map(m =>
+            HasMany(t => t.Questions).WithMany(t => t.Travelers).Map(m =>
             {
-                m.ToTable("TravellerActionList", "dbo");
+                m.ToTable("TravelerActionList", "dbo");
                 m.MapLeftKey("Milestones_Id");
                 m.MapRightKey("Questions_Id");
             });

@@ -1,55 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NWCSampleManager
 {
     public partial class Question
     {
-        public string TeamName
-        { get => ((Team)this.Team).ToString().SplitCamelCase(); }
+        #region Public Properties
 
         public string ResponseType
         { get => ((ResponseType)this.Type).ToString().SplitCamelCase(); }
 
+        public string TeamName
+        { get => ((Team)this.Team).ToString().SplitCamelCase(); }
+
         public int TeamSort { get => ProductFlow.Order.IndexOf(((Team)this.Team).ToString()); }
 
-        public ResponseRepository GetMilestoneResponseForQuestion(Traveller m)
-        {
-            using (var sql = new SampleTravellersContext())
-            {
-                var p = this.ResponseRepositories.Where(x => x.Traveller == m);
+        #endregion Public Properties
 
-                if (p.Any())
-                {
-                    return p.First();
-                }
-                else return null;
-            }
-        }
+        #region Public Methods
 
-        public void AddPrerequisite(Question that)
-        {
-            if (!(this.Id == that.Id))
-            {
-                this.AddPreOrPostequisite(this, that);
-            }
-
-        }
-            public void AddPostrequisite(Question that)
+        public void AddPostrequisite(Question that, bool unilateral = false)
         {
             if (!(this.Id == that.Id))
             {
                 this.AddPreOrPostequisite(that, this);
             }
-            
+        }
+
+        public void AddPrerequisite(Question that, bool unilateral = false)
+        {
+            if (!(this.Id == that.Id))
+            {
+                this.AddPreOrPostequisite(this, that);
+            }
         }
 
         public Question GetCompleteQuestion()
         {
-            using (var sql = new SampleTravellersContext())
+            using (var sql = new SampleTravelersContext())
             {
                 try
                 {
@@ -66,6 +55,34 @@ namespace NWCSampleManager
             }
         }
 
+        public ResponseRepository GetMilestoneResponseForQuestion(Traveler m)
+        {
+            using (var sql = new SampleTravelersContext())
+            {
+                var p = this.ResponseRepositories.Where(x => x.Traveler == m);
+
+                if (p.Any())
+                {
+                    return p.First();
+                }
+                else return null;
+            }
+        }
+
+        public QuestionComment GetQuestionCommentForTraveler(Traveler m)
+        {
+            using (var sql = new SampleTravelersContext())
+            {
+                var p = this.QuestionComments.Where(x => x.Traveler == m);
+
+                if (p.Any())
+                {
+                    return p.First();
+                }
+                else return null;
+            }
+        }
+
         public List<Question> RequisitesList()
         {
             var temp = this.GetCompleteQuestion();
@@ -76,17 +93,22 @@ namespace NWCSampleManager
             return btemp;
         }
 
+        #endregion Public Methods
+
+        #region Private Methods
+
         private void AddPreOrPostequisite(Question q1, Question q2)
         {
-            if (!q1.Prerequisites.Any(x=>x.Id == q1.Id))
+            if (!q1.Prerequisites.Any(x => x.Id == q1.Id))
             {
                 q1.Prerequisites.Add(q2);
             }
-            if (!q2.Postrequisites.Any(x=>x.Id == q1.Id))
+            if (!q2.Postrequisites.Any(x => x.Id == q1.Id))
             {
                 q2.Postrequisites.Add(q1);
             }
         }
-            
+
+        #endregion Private Methods
     }
 }
